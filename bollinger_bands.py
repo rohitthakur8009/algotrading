@@ -94,11 +94,11 @@ def simulate_advanced_trading(data, short_window=10, long_window=50):
     short_ma = data['Close'].rolling(window=short_window).mean()
     long_ma = data['Close'].rolling(window=long_window).mean()
 
-    for _, row in data.iterrows():
+    for date, row in data.iterrows():
         if action == "buy":
             if row['RSI'] < 30 and short_ma[row.name] > long_ma[row.name]:
                 invested = 100 * row['Close']
-                print(f'Buy 100 stocks at {row["Close"]} | {invested}')
+                print(f'Buy 100 stocks at {row["Close"]} | {invested} | {date}')
                 action = "sell"
         else:
             if row['RSI'] > 70 or short_ma[row.name] < long_ma[row.name]:
@@ -106,7 +106,7 @@ def simulate_advanced_trading(data, short_window=10, long_window=50):
                 if profit > 0:
                     invested = 0
                     total_profit += profit
-                    print(f'Sold 100 stocks at {row["Close"]} | Profit: {profit}')
+                    print(f'Sold 100 stocks at {row["Close"]} | Profit: {profit} | {date}')
                     action = "buy"
 
     return total_profit
